@@ -35,7 +35,7 @@ dropdowns, chip/tag inputs, native date/month inputs and rich-text editors (cont
 
 ## Install (temporary, development)
 
-> A prebuilt archive is available at `dist/job_form_autofill-1.1.2.zip`. Use the folder below (not the zip)
+> A prebuilt archive is available at `dist/job_form_autofill-1.2.0.zip`. Use the folder below (not the zip)
 > with `about:debugging`; the zip is for signing/distribution.
 
 1. Open `about:debugging#/runtime/this-firefox`.
@@ -306,7 +306,11 @@ cd job-autofill
 
 # Validate the manifest and package
 npx web-ext lint --source-dir .
-npx web-ext build --source-dir . --artifacts-dir dist --overwrite-dest
+
+# Package only the runtime files (no demo/, samples/, tests/, README)
+rm -rf /tmp/jfa-stage && mkdir -p /tmp/jfa-stage
+cp -a manifest.json background.js LICENSE content icons options popup shared /tmp/jfa-stage/
+npx web-ext build --source-dir /tmp/jfa-stage --artifacts-dir dist --overwrite-dest
 
 # Run in a temporary Firefox profile
 npx web-ext run --source-dir .
@@ -315,11 +319,12 @@ npx web-ext run --source-dir .
 To distribute a persistent `.xpi`, sign it on addons.mozilla.org or with `web-ext sign`:
 
 ```bash
-npx web-ext sign --source-dir . --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+npx web-ext sign --source-dir /tmp/jfa-stage --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
 ```
 
-`web-ext build` includes `demo/` and `samples/`; the example profile already ships with fictitious data,
-so it is safe to publish as-is.
+The add-on ID is `job-form-autofill@doykarin.com` (set in `manifest.json`). It is permanent once the
+add-on is published, so change it before the first submission if you want a different one. Bump
+`version` in `manifest.json` (and the footer in `options/options.html`) for every upload.
 
 `web-ext lint` reports two informational `KEY_FIREFOX_*_UNSUPPORTED_BY_MIN_VERSION` warnings: the
 `data_collection_permissions` key was introduced in Firefox 140 (142 on Android) while the manifest

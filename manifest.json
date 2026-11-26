@@ -2,12 +2,12 @@
   "manifest_version": 3,
   "name": "Job Form Autofill",
   "short_name": "Job Autofill",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Fill job application forms from one career profile. Click-to-fill suggestions for anything the extension cannot guess.",
   "author": "Job Form Autofill contributors",
   "browser_specific_settings": {
     "gecko": {
-      "id": "job-form-autofill@example.org",
+      "id": "illunaairin@gmail.com",
       "strict_min_version": "115.0",
       "data_collection_permissions": {
         "required": [
