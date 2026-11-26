@@ -55,6 +55,7 @@
       dateOfBirth: "",
       nationality: "",
       cpf: "",
+      rg: "",
       linkedin: "",
       github: "",
       website: "",
@@ -110,7 +111,8 @@
       blocklist: "",
       showPanelButton: false,
       highlightFilled: true,
-      useFakeCpf: false
+      useFakeCpf: false,
+      useFakeRg: false
     }
   };
 
@@ -320,6 +322,66 @@
     return useFake ? fakeCpf(profile) : formatCpf(personal.cpf);
   };
 
+  /* ------------------------------------------------------------------ */
+  /* RG (Brazil)                                                         */
+  /* ------------------------------------------------------------------ */
+
+  // RGs vary by state. Keep digits and the possible "X" check digit;
+  // everything else is punctuation that only matters for display.
+  const rgChars = (value) =>
+    String(value ?? "")
+      .toUpperCase()
+      .replace(/[^0-9X]/g, "");
+
+  const formatRg = (value) => {
+    const chars = rgChars(value);
+    if (chars.length !== 9) return String(value ?? "").trim();
+    return `${chars.slice(0, 2)}.${chars.slice(2, 5)}.${chars.slice(5, 8)}-${chars.slice(8)}`;
+  };
+
+  // São Paulo-style check digit (weights 2..9 over the eight base digits).
+  // Other states use different rules, so this is only used to keep generated
+  // test values internally consistent.
+  const rgCheckDigit = (digits) => {
+    const base = String(digits ?? "").replace(/\D/g, "");
+    let sum = 0;
+    for (let index = 0; index < base.length; index += 1) {
+      sum += Number(base[index]) * (base.length + 1 - index);
+    }
+    const digit = 11 - (sum % 11);
+    if (digit === 10) return "X";
+    if (digit === 11) return "0";
+    return String(digit);
+  };
+
+  // Deterministic, valid-format RG derived from the profile. Like fakeCpf it
+  // is meant for privacy/testing: stable for the same identity, but it is not
+  // an official document.
+  const fakeRg = (profile) => {
+    const personal = (profile && profile.personal) || {};
+    const seed =
+      String(personal.email || "").trim() ||
+      fullName(profile) ||
+      String(personal.phoneNumber || "").trim() ||
+      "job-form-autofill";
+    let state = hashString(`rg:${seed}`) || 1;
+    const next = () => {
+      state = (state + 0x6d2b79f5) >>> 0;
+      let value = state;
+      value = Math.imul(value ^ (value >>> 15), value | 1);
+      value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+    };
+    const base = Array.from({ length: 8 }, () => Math.floor(next() * 10)).join("");
+    return formatRg(`${base}${rgCheckDigit(base)}`);
+  };
+
+  const rgValue = (profile) => {
+    const personal = (profile && profile.personal) || {};
+    const useFake = Boolean(profile && profile.settings && profile.settings.useFakeRg);
+    return useFake ? fakeRg(profile) : formatRg(personal.rg);
+  };
+
   const withProtocol = (value, fallbackHost) => {
     const text = String(value || "").trim();
     if (!text) return "";
@@ -417,6 +479,9 @@
     const cpf = cpfValue(profile);
     const cpfDigitsOnly = cpfDigits(cpf);
     const useFakeCpf = Boolean(profile && profile.settings && profile.settings.useFakeCpf);
+    const rg = rgValue(profile);
+    const rgCharsOnly = rgChars(rg);
+    const useFakeRg = Boolean(profile && profile.settings && profile.settings.useFakeRg);
 
     add("Personal", "Full name", fullName(profile), "personal.fullName");
     add("Personal", "First name", personal.firstName, "personal.firstName");
@@ -439,6 +504,10 @@
     add("Personal", useFakeCpf ? "CPF (fake)" : "CPF", cpf, "personal.cpf");
     if (cpfDigitsOnly.length === 11) {
       add("Personal", "CPF (digits only)", cpfDigitsOnly, "personal.cpf");
+    }
+    add("Personal", useFakeRg ? "RG (fake)" : "RG", rg, "personal.rg");
+    if (/^\d{9}$/.test(rgCharsOnly)) {
+      add("Personal", "RG (digits only)", rgCharsOnly, "personal.rg");
     }
     add("Personal", "LinkedIn", personal.linkedin, "personal.linkedin");
     add("Personal", "GitHub", personal.github, "personal.github");
@@ -672,6 +741,11 @@
     isValidCpf,
     fakeCpf,
     cpfValue,
+    rgChars,
+    formatRg,
+    rgCheckDigit,
+    fakeRg,
+    rgValue,
     withProtocol,
     parseDate,
     formatDate,

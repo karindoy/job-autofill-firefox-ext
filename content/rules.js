@@ -19,7 +19,10 @@
     withProtocol,
     formatCpf,
     fakeCpf,
-    cpfValue
+    cpfValue,
+    formatRg,
+    fakeRg,
+    rgValue
   } = window.JAProfile;
 
   const RULES = [];
@@ -247,6 +250,33 @@
       if (fake) out.push({ label: "Fake CPF (valid format)", value: fake });
       const saved = formatCpf(p && p.personal && p.personal.cpf);
       if (saved && saved !== fake) out.push({ label: "Saved CPF", value: saved });
+      return out;
+    }
+  });
+
+  rule({
+    id: "personal.rg",
+    label: "RG",
+    priority: 138,
+    patterns: [
+      /^rg$/,
+      /\brg\b/,
+      /\bregistro\s+geral\b/,
+      /\bregistro\s+geral\s+de\s+identidade\b/,
+      /\b(c[eé]dula|cart[oó]rio)\s+de\s+identidade\b/,
+      /\bdocumento\s+de\s+identidade\b/,
+      /\bidentity\s+(card|document)\b/
+    ],
+    nameHints: ["rg", "registro geral", "identidade", "identity card"],
+    exclude: [/cnpj/, /cpf/, /company|empresa|responsavel/, /genero|gender/],
+    mode: "rg",
+    value: (p) => rgValue(p),
+    suggest: (p) => {
+      const out = [];
+      const fake = fakeRg(p);
+      if (fake) out.push({ label: "Fake RG (valid format)", value: fake });
+      const saved = formatRg(p && p.personal && p.personal.rg);
+      if (saved && saved !== fake) out.push({ label: "Saved RG", value: saved });
       return out;
     }
   });
@@ -1079,6 +1109,10 @@
     "personal.nationality": {
       patterns: [/\bnacionalidade\b/, /\bcidadania\b/],
       nameHints: ["nacionalidade"]
+    },
+    "personal.rg": {
+      patterns: [/\bidentidade\b/],
+      nameHints: ["registro geral", "identidade"]
     },
     "current.company": {
       patterns: [

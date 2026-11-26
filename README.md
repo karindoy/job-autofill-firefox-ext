@@ -17,7 +17,7 @@ Built from real application screens such as Mercor-style forms:
 
 | Area | Examples |
 | --- | --- |
-| Contact | First/last name, full name, preferred name, pronouns, email, phone + country code, country, city, state, address, postal code, birth date, nationality, CPF (Brazil) |
+| Contact | First/last name, full name, preferred name, pronouns, email, phone + country code, country, city, state, address, postal code, birth date, nationality, CPF and RG (Brazil) |
 | Links | LinkedIn, GitHub, portfolio/website, X (Twitter) |
 | Current role | Most recent employer, job title, role category, company location, employment type, start date, end date, remote, description, skills used |
 | Experience | Total professional experience (years + months), relevant experience in the primary skill; repeated work-history editors are filled block by block from the experience list |
@@ -71,6 +71,8 @@ typed into. Toggle it globally or per site:
 - Options → **Settings → Auto-fill**.
 - Options → **Settings → Use a fake CPF** to fill CPF fields with a generated, valid-format CPF
   instead of your saved number. The CPF field also has a **Fake CPF** toggle in the popup.
+- Options → **Settings → Use a fake RG** to fill RG fields with a generated, valid-format RG
+  instead of your saved number. The RG field also has a **Fake RG** toggle in the popup.
 - Popup footer → **Auto-fill on this site**.
 
 ### 2. Popup
@@ -280,6 +282,8 @@ Review everything on the page before submitting. The extension is an assistant, 
 - **Custom date pickers** that are not native inputs cannot be reliably driven; fill them manually.
 - **Fake CPF** values are generated from your profile for privacy/testing. They pass the CPF checksum
   but are not official documents; a site that cross-checks public records may reject them.
+- **Fake RG** values are generated from your profile for privacy/testing too. They use the São Paulo
+  check-digit format, but RG rules vary by state and they are not official documents.
 - Fields inside **shadow DOM / closed web components** are not discovered by `document.querySelectorAll`; use the page normally.
 - Tabs that were already open before you installed or reloaded the extension need one page reload. The popup can inject on demand, but a reload is the most reliable.
 - The popup shows the **top document**; auto-fill still runs in iframes (`all_frames: true`), but per-field picking does not reach inside an iframe.

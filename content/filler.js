@@ -1150,6 +1150,14 @@
         /^\d+$/.test(el.getAttribute?.("pattern") || "");
       return fillText(el, digitsOnly ? digits : window.JAProfile.formatCpf(digits), ctx);
     }
+    if (mode === "rg") {
+      const chars = window.JAProfile.rgChars(asText(raw));
+      const maxLength = Number(el.getAttribute?.("maxlength") || 0);
+      const plain =
+        (maxLength > 0 && maxLength <= 9) ||
+        /^[0-9x]+$/i.test(el.getAttribute?.("pattern") || "");
+      return fillText(el, plain ? chars : window.JAProfile.formatRg(chars), ctx);
+    }
     if (isComboboxElement(el, ctx)) return fillCombobox(el, raw);
     return fillText(el, raw, ctx);
   }

@@ -81,6 +81,10 @@ const cases = [
   ["Email address", "personal.email"],
   ["Phone number", "personal.phone"],
   ["CPF", "personal.cpf"],
+  ["RG", "personal.rg"],
+  ["Registro Geral", "personal.rg"],
+  ["Cédula de Identidade", "personal.rg"],
+  ["Documento de identidade", "personal.rg"],
   ["Date of birth", "personal.dateOfBirth"],
   ["Country", "personal.country", { select: true, tagName: "SELECT", options: ["Brazil", "United States"] }],
   ["In which country do you reside?", "personal.country", { select: true, tagName: "SELECT", options: ["Brazil", "United States"] }],
@@ -117,6 +121,9 @@ const cases = [
   ["Telefone celular", "personal.phone"],
   ["DDI", "personal.phoneCountryCode", { select: true, tagName: "SELECT", options: ["+55", "+1"] }],
   ["CPF", "personal.cpf"],
+  ["RG", "personal.rg"],
+  ["Registro Geral", "personal.rg"],
+  ["Carteira de Identidade", "personal.rg"],
   ["Data de nascimento", "personal.dateOfBirth"],
   ["Nacionalidade", "personal.nationality"],
   ["CEP", "personal.postalCode"],
@@ -191,12 +198,27 @@ check("LinkedIn da empresa is not the candidate profile", match("LinkedIn da emp
 check("Disponibilidade para trabalho presencial is not notice", match("Disponibilidade para trabalho presencial"), null);
 check("Disponibilidade para mudança is not notice", match("Disponibilidade para mudança"), null);
 check("A boolean answer is never typed into a text input", match("I currently work here"), null);
+check("CNPJ is not RG", match("CNPJ"), null);
+check("RG da empresa is not personal RG", match("RG da empresa"), null);
 
 // Values read from the sample profile.
 check("current location value", value("What is your current location?"), "São Paulo");
 check("first name value", value("Qual é o seu nome?"), "Marina");
 check("full name value", value("Nome completo"), "Marina Alves");
 check("phone value", value("Telefone"), "+55 11999990000");
+
+// RG helpers mirror the CPF ones: format, deterministic fake value and the
+// profile setting that switches between saved and fake.
+const profileApi = sandbox.window.JAProfile;
+const fakeRg = profileApi.fakeRg(profile);
+check("RG formatting", profileApi.formatRg("123456789"), "12.345.678-9");
+check("fake RG uses the expected format", /^\d{2}\.\d{3}\.\d{3}-[0-9X]$/.test(fakeRg), true);
+check("fake RG is deterministic", profileApi.fakeRg(profile), fakeRg);
+check(
+  "fake RG is used when the setting is on",
+  profileApi.rgValue({ ...profile, settings: { ...profile.settings, useFakeRg: true } }),
+  fakeRg
+);
 
 /* ------------------------------------------------------------------ */
 /* Repeated work-history blocks                                        */

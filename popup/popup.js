@@ -603,27 +603,42 @@
     return wrap;
   };
 
-  const setFakeCpf = async (enabled) => {
+  const setFakeDocument = async (settingsKey, label, enabled) => {
     if (busy) return;
     setBusy(true);
     try {
       const latest = await window.JAProfile.load();
-      latest.settings.useFakeCpf = Boolean(enabled);
+      latest.settings[settingsKey] = Boolean(enabled);
       profile = await window.JAProfile.save(latest);
       refreshCatalog();
       await refreshScan();
       send({ type: "RELOAD_PROFILE" }, { allFrames: true }).catch(() => {});
       setStatus(
         enabled
-          ? "CPF will be filled with a generated fake value."
-          : "CPF will use the value saved in your profile."
+          ? `${label} will be filled with a generated fake value.`
+          : `${label} will use the value saved in your profile.`
       );
     } catch (error) {
-      setStatus("Could not change the CPF setting.", true);
+      setStatus(`Could not change the ${label} setting.`, true);
     } finally {
       setBusy(false);
       if (scan) renderFields();
     }
+  };
+
+  const setFakeCpf = (enabled) => setFakeDocument("useFakeCpf", "CPF", enabled);
+  const setFakeRg = (enabled) => setFakeDocument("useFakeRg", "RG", enabled);
+
+  const fakeToggle = (settingsKey, label, onToggle) => {
+    const wrap = element("label", "field-switch");
+    wrap.title = `Generate a valid-format ${label} instead of the saved number`;
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.className = "switch";
+    input.checked = Boolean(profile && profile.settings && profile.settings[settingsKey]);
+    input.addEventListener("change", () => onToggle(input.checked));
+    wrap.append(input, document.createTextNode(`Fake ${label}`));
+    return wrap;
   };
 
   const buildField = (field) => {
@@ -672,15 +687,10 @@
     actions.appendChild(choose);
 
     if (field.ruleId === "personal.cpf") {
-      const fakeToggle = element("label", "field-switch");
-      fakeToggle.title = "Generate a valid-format CPF instead of the saved number";
-      const fakeInput = document.createElement("input");
-      fakeInput.type = "checkbox";
-      fakeInput.className = "switch";
-      fakeInput.checked = Boolean(profile && profile.settings && profile.settings.useFakeCpf);
-      fakeInput.addEventListener("change", () => setFakeCpf(fakeInput.checked));
-      fakeToggle.append(fakeInput, document.createTextNode("Fake CPF"));
-      actions.appendChild(fakeToggle);
+      actions.appendChild(fakeToggle("useFakeCpf", "CPF", setFakeCpf));
+    }
+    if (field.ruleId === "personal.rg") {
+      actions.appendChild(fakeToggle("useFakeRg", "RG", setFakeRg));
     }
 
     row.append(top, actions);

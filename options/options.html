@@ -119,6 +119,10 @@
             <input data-path="personal.cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00">
             <small>Brazil only. Enable “Use a fake CPF” in Settings to fill a generated value instead.</small>
           </label>
+          <label>RG
+            <input data-path="personal.rg" maxlength="12" placeholder="00.000.000-0">
+            <small>Brazil only. Enable “Use a fake RG” in Settings to fill a generated value instead.</small>
+          </label>
         </div>
 
         <h3 class="subhead">Professional links</h3>
@@ -394,6 +398,13 @@
               <small>Fill CPF fields with a generated, valid-format CPF derived from your profile instead of the saved number. Useful for testing or when you prefer not to share it.</small>
             </span>
             <input data-path="settings.useFakeCpf" type="checkbox" class="switch">
+          </label>
+          <label class="switch-row">
+            <span>
+              <strong>Use a fake RG</strong>
+              <small>Fill RG fields with a generated, valid-format RG derived from your profile instead of the saved number. Useful for testing or when you prefer not to share it.</small>
+            </span>
+            <input data-path="settings.useFakeRg" type="checkbox" class="switch">
           </label>
         </div>
 
