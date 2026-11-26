@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Career profile — Job Form Autofill</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="../icons/icon-48.png" alt="" width="32" height="32">
+      <div>
+        <strong>Job Form Autofill</strong>
+        <span>Career profile</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="button ghost" href="../demo/form.html" target="_blank" rel="noreferrer" title="Content scripts need an http:// page; see the README for the one-line server command">Open demo form</a>
+      <span id="saveState" class="save-state" data-state="saved"><i></i>Saved</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="progress-card">
+        <div class="progress-head">
+          <span>Profile completeness</span>
+          <strong id="completenessValue">0%</strong>
+        </div>
+        <div class="progress-track"><div id="completenessBar" class="progress-bar"></div></div>
+        <p id="completenessHint" class="muted small">Fill the basics to enable auto-fill.</p>
+        <ul id="completenessMissing" class="missing"></ul>
+      </div>
+
+      <nav class="nav" aria-label="Profile sections">
+        <a href="#personal">Personal &amp; contact</a>
+        <a href="#current">Current role</a>
+        <a href="#experience">Experience history</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills &amp; languages</a>
+        <a href="#preferences">Preferences</a>
+        <a href="#eligibility">Eligibility &amp; EEO</a>
+        <a href="#answers">Saved answers</a>
+        <a href="#settings">Settings</a>
+        <a href="#data">Import &amp; export</a>
+      </nav>
+
+      <p class="sidebar-note">
+        Everything is stored locally with <code>browser.storage.local</code>. No account, no server, no analytics.
+      </p>
+    </aside>
+
+    <div class="content">
+      <p class="intro">
+        Fill this once. The extension matches each job-application field by its label, so you do not have to
+        map fields by hand — and anything it cannot guess is still one click away in the popup.
+      </p>
+
+      <section id="personal" class="card">
+        <div class="card-head">
+          <h2>Personal &amp; contact</h2>
+          <p>The identity fields almost every application asks for.</p>
+        </div>
+
+        <div class="grid">
+          <label>First name
+            <input data-path="personal.firstName" autocomplete="given-name" placeholder="Marina">
+          </label>
+          <label>Last name
+            <input data-path="personal.lastName" autocomplete="family-name" placeholder="Alves">
+          </label>
+          <label>Middle name
+            <input data-path="personal.middleName" placeholder="(optional)">
+          </label>
+          <label>Preferred name
+            <input data-path="personal.preferredName" placeholder="Marina">
+          </label>
+          <label>Pronouns
+            <input data-path="personal.pronouns" list="pronoun-options" placeholder="She/Her">
+          </label>
+          <label>Email
+            <input data-path="personal.email" type="email" autocomplete="email" placeholder="you@example.com">
+          </label>
+          <label>Phone country code
+            <input data-path="personal.phoneDialCode" placeholder="+55">
+          </label>
+          <label>Phone number
+            <input data-path="personal.phoneNumber" type="tel" autocomplete="tel-national" placeholder="11999990000">
+          </label>
+          <label>Country
+            <input data-path="personal.country" autocomplete="country-name" placeholder="Brazil">
+          </label>
+          <label>Country code
+            <input data-path="personal.countryCode" maxlength="3" placeholder="BR">
+          </label>
+          <label>Country of birth
+            <input data-path="personal.birthCountry" placeholder="Brazil">
+          </label>
+          <label>City
+            <input data-path="personal.city" autocomplete="address-level2" placeholder="São Paulo">
+          </label>
+          <label>State / province
+            <input data-path="personal.state" autocomplete="address-level1" placeholder="São Paulo">
+          </label>
+          <label>Street address
+            <input data-path="personal.address" autocomplete="street-address" placeholder="Rua…">
+          </label>
+          <label>Postal code
+            <input data-path="personal.postalCode" autocomplete="postal-code" placeholder="00000-000">
+          </label>
+          <label>Date of birth
+            <input data-path="personal.dateOfBirth" type="date">
+          </label>
+          <label>Nationality
+            <input data-path="personal.nationality" placeholder="Brazilian">
+          </label>
+          <label>CPF
+            <input data-path="personal.cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00">
+            <small>Brazil only. Enable “Use a fake CPF” in Settings to fill a generated value instead.</small>
+          </label>
+        </div>
+
+        <h3 class="subhead">Professional links</h3>
+        <div class="grid">
+          <label>LinkedIn
+            <input data-path="personal.linkedin" placeholder="https://linkedin.com/in/you">
+          </label>
+          <label>GitHub
+            <input data-path="personal.github" placeholder="https://github.com/you">
+          </label>
+          <label>Portfolio / website
+            <input data-path="personal.website" placeholder="https://you.dev">
+          </label>
+          <label>X / Twitter
+            <input data-path="personal.x" placeholder="https://x.com/you">
+          </label>
+        </div>
+      </section>
+
+      <section id="current" class="card">
+        <div class="card-head">
+          <h2>Current role</h2>
+          <p>Used for “most recent employer”, “job title at recent employer”, work-experience editors and “skills used in this position”.</p>
+        </div>
+        <div class="grid">
+          <label class="span-2">Company name
+            <input data-path="currentRole.company" placeholder="Acme Software (Allocated at Banco Aurora)">
+          </label>
+          <label>Job title
+            <input data-path="currentRole.title" placeholder="Software Engineer">
+          </label>
+          <label>Role category
+            <input data-path="currentRole.roleCategory" list="role-options" placeholder="Software Engineer">
+          </label>
+          <label>Company location
+            <input data-path="currentRole.location" placeholder="São Paulo">
+          </label>
+          <label>Employment type
+            <input data-path="currentRole.employmentType" list="employment-type-options" placeholder="CLT, PJ, Internship">
+          </label>
+          <label>Start date
+            <input data-path="currentRole.startDate" type="month">
+          </label>
+          <label>End date
+            <input data-path="currentRole.endDate" type="month">
+          </label>
+          <label class="check"><input data-path="currentRole.current" type="checkbox"> I currently work here</label>
+          <label class="check"><input data-path="currentRole.remote" type="checkbox"> This is a remote position</label>
+          <label class="span-2">Skills used in this position <small>Comma separated</small>
+            <input data-path="currentRole.skills" placeholder="Kotlin, Java, Spring Boot, AWS, PostgreSQL">
+          </label>
+          <label class="span-2">Role description <small>Paste your achievements; this is what “Description” fields get.</small>
+            <textarea data-path="currentRole.description" rows="7"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section id="experience" class="card">
+        <div class="card-head">
+          <h2>Experience history</h2>
+          <p>Previous roles. They appear as alternatives when you pick a value for “Company” or “Job title”.</p>
+        </div>
+        <div data-list="experience" class="rows"></div>
+        <button type="button" class="button" data-add="experience">+ Add previous role</button>
+      </section>
+
+      <section id="education" class="card">
+        <div class="card-head">
+          <h2>Education</h2>
+          <p>Used for school, degree and field-of-study fields.</p>
+        </div>
+        <div data-list="education" class="rows"></div>
+        <button type="button" class="button" data-add="education">+ Add education</button>
+      </section>
+
+      <section id="skills" class="card">
+        <div class="card-head">
+          <h2>Skills &amp; languages</h2>
+          <p>Skills feed chip/tag fields. The first primary skill is used when a field only accepts one value.</p>
+        </div>
+        <div class="grid">
+          <label class="span-2">Primary skill(s) <small>Comma separated; the first one wins single-value fields.</small>
+            <input data-path="skills.primary" placeholder="Java">
+          </label>
+          <label class="span-2">Secondary skills <small>Comma separated</small>
+            <textarea data-path="skills.secondary" rows="5" placeholder="Kotlin, TypeScript, SQL, Spring Boot, AWS, Docker…"></textarea>
+          </label>
+          <label class="span-2">Extra skills <small>Anything not covered above.</small>
+            <textarea data-path="skills.extra" rows="3"></textarea>
+          </label>
+        </div>
+
+        <h3 class="subhead">Languages</h3>
+        <div data-list="languages" class="rows"></div>
+        <button type="button" class="button" data-add="languages">+ Add language</button>
+      </section>
+
+      <section id="preferences" class="card">
+        <div class="card-head">
+          <h2>Preferences</h2>
+          <p>Compensation, experience totals and the dropdowns at the end of most applications.</p>
+        </div>
+        <div class="grid">
+          <label>Expected monthly compensation
+            <input data-path="preferences.expectedSalary" inputmode="decimal" placeholder="12000">
+          </label>
+          <label>Currency
+            <select data-path="preferences.currency">
+              <option>USD</option>
+              <option>BRL</option>
+              <option>EUR</option>
+              <option>GBP</option>
+              <option>CAD</option>
+              <option>AUD</option>
+            </select>
+          </label>
+          <label>English level
+            <select data-path="preferences.englishLevel">
+              <option>Basic</option>
+              <option>Intermediate</option>
+              <option>Professional working proficiency</option>
+              <option>Full professional proficiency</option>
+              <option>Native or bilingual proficiency</option>
+            </select>
+          </label>
+          <label>Preferred place of work
+            <select data-path="preferences.preferredPlaceOfWork">
+              <option>Remote</option>
+              <option>Hybrid</option>
+              <option>On-site</option>
+              <option>Flexible</option>
+            </select>
+          </label>
+          <label>Total professional experience — years
+            <input data-path="preferences.totalYears" type="number" min="0" max="60" step="1" placeholder="8">
+          </label>
+          <label>Total professional experience — months
+            <select data-path="preferences.totalMonths">
+              <option value="0">0</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option>
+            </select>
+          </label>
+          <label>Relevant experience in primary skill — years
+            <input data-path="preferences.relevantYears" type="number" min="0" max="60" step="1">
+          </label>
+          <label>Relevant experience in primary skill — months
+            <select data-path="preferences.relevantMonths">
+              <option value="0">0</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+              <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option>
+            </select>
+          </label>
+          <label>Notice period
+            <input data-path="preferences.noticePeriod" placeholder="30 days">
+          </label>
+          <label>Available to start
+            <input data-path="preferences.availableStart" placeholder="Immediately">
+          </label>
+        </div>
+      </section>
+
+      <section id="eligibility" class="card">
+        <div class="card-head">
+          <h2>Eligibility &amp; EEO</h2>
+          <p>Work-authorization questions and voluntary self-identification. “Decline to self-identify” is respected by the matcher.</p>
+        </div>
+        <div class="grid">
+          <label>Authorized to work
+            <select data-path="eligibility.authorizedToWork">
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </label>
+          <label>Require visa sponsorship
+            <select data-path="eligibility.requiresSponsorship">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </label>
+          <label>Gender
+            <select data-path="eligibility.gender">
+              <option>Decline to self-identify</option>
+              <option>Woman</option>
+              <option>Man</option>
+              <option>Non-binary</option>
+            </select>
+          </label>
+          <label>Race / ethnicity
+            <select data-path="eligibility.ethnicity">
+              <option>Decline to self-identify</option>
+              <option>Asian</option>
+              <option>Black or African American</option>
+              <option>Hispanic or Latino</option>
+              <option>White</option>
+              <option>Two or more races</option>
+            </select>
+          </label>
+          <label>Veteran status
+            <select data-path="eligibility.veteran">
+              <option>Decline to self-identify</option>
+              <option>I am not a protected veteran</option>
+              <option>I am a protected veteran</option>
+            </select>
+          </label>
+          <label>Disability status
+            <select data-path="eligibility.disability">
+              <option>Decline to self-identify</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section id="answers" class="card">
+        <div class="card-head">
+          <h2>Saved answers</h2>
+          <p>
+            For questions that are not built in. Use the field label as the key (for example
+            <em>“notice period”</em> or <em>“why do you want to work here”</em>) and the answer as the value.
+            The popup can also save these for you with one click.
+          </p>
+        </div>
+        <div data-list="answers" class="rows answers"></div>
+        <button type="button" class="button" data-add="answers">+ Add saved answer</button>
+      </section>
+
+      <section id="settings" class="card">
+        <div class="card-head">
+          <h2>Settings</h2>
+          <p>How aggressive the extension should be.</p>
+        </div>
+        <div class="settings-list">
+          <label class="switch-row">
+            <span>
+              <strong>Auto-fill</strong>
+              <small>Fill empty fields automatically when a page or an application step loads.</small>
+            </span>
+            <input data-path="settings.autoFill" type="checkbox" class="switch">
+          </label>
+          <label class="switch-row">
+            <span>
+              <strong>Keep watching for new steps</strong>
+              <small>Multi-step applications render new questions without a page reload. This keeps auto-fill working on them.</small>
+            </span>
+            <input data-path="settings.autoFillOnNavigation" type="checkbox" class="switch">
+          </label>
+          <label class="switch-row">
+            <span>
+              <strong>Only fill empty fields by default</strong>
+              <small>Used by the keyboard shortcut and context menu. The popup always offers both “Fill empty fields” and “Overwrite all”.</small>
+            </span>
+            <input data-path="settings.fillOnlyEmpty" type="checkbox" class="switch">
+          </label>
+          <label class="switch-row">
+            <span>
+              <strong>Show a floating “Autofill” button</strong>
+              <small>Mouse-only access to the value picker without opening the toolbar popup.</small>
+            </span>
+            <input data-path="settings.showPanelButton" type="checkbox" class="switch">
+          </label>
+          <label class="switch-row">
+            <span>
+              <strong>Highlight fields after filling</strong>
+              <small>A short green outline confirms what the extension touched.</small>
+            </span>
+            <input data-path="settings.highlightFilled" type="checkbox" class="switch">
+          </label>
+          <label class="switch-row">
+            <span>
+              <strong>Use a fake CPF</strong>
+              <small>Fill CPF fields with a generated, valid-format CPF derived from your profile instead of the saved number. Useful for testing or when you prefer not to share it.</small>
+            </span>
+            <input data-path="settings.useFakeCpf" type="checkbox" class="switch">
+          </label>
+        </div>
+
+        <div class="grid">
+          <label>Date format for text date fields
+            <select data-path="settings.dateFormat">
+              <option>MM/DD/YYYY</option>
+              <option>DD/MM/YYYY</option>
+              <option>YYYY-MM-DD</option>
+              <option>MMM YYYY</option>
+            </select>
+            <small>Native date pickers always receive ISO dates; this applies to plain text date inputs.</small>
+          </label>
+          <label class="span-2">Disabled sites <small>One hostname per line, e.g. <code>my-company.example</code></small>
+            <textarea data-path="settings.blocklist" rows="4" placeholder="internal.example.com"></textarea>
+          </label>
+        </div>
+
+        <div class="shortcut">
+          <div>
+            <strong>Keyboard shortcuts</strong>
+            <small>Change them in Firefox’s extension shortcut settings.</small>
+          </div>
+          <div class="keys">
+            <span><kbd>Alt</kbd><kbd>Shift</kbd><kbd>F</kbd> fill page</span>
+            <span><kbd>Alt</kbd><kbd>Shift</kbd><kbd>P</kbd> pick a field</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="data" class="card">
+        <div class="card-head">
+          <h2>Import &amp; export</h2>
+          <p>Back up the profile, move it to another Firefox profile, or start from the included example.</p>
+        </div>
+
+        <div class="data-actions">
+          <button type="button" class="button" id="exportProfile">Export JSON</button>
+          <label class="button file-button">
+            Import JSON
+            <input type="file" id="importFile" accept="application/json,.json" hidden>
+          </label>
+          <button type="button" class="button" id="loadExample">Load example profile</button>
+          <button type="button" class="button danger" id="clearProfile">Clear all data</button>
+        </div>
+        <p class="muted small">
+          The example profile is built from the CV in this repository, so you can test the demo form
+          immediately and then edit the values.
+        </p>
+
+        <div class="privacy">
+          <strong>Privacy</strong>
+          <p>
+            Your profile never leaves this browser. The extension has no network code and requests no
+            analytics permission. Auto-fill only runs on pages you visit and can be disabled per site above.
+          </p>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <span>Job Form Autofill 1.1.2</span>
+        <a href="../demo/form.html" target="_blank" rel="noreferrer" title="Serve the demo over http:// so content scripts can run">Test on the demo form →</a>
+      </footer>
+    </div>
+  </main>
+
+  <datalist id="pronoun-options">
+    <option>She/Her</option>
+    <option>He/Him</option>
+    <option>They/Them</option>
+    <option>She/They</option>
+    <option>He/They</option>
+  </datalist>
+  <datalist id="role-options">
+    <option>Software Engineer</option>
+    <option>Backend Engineer</option>
+    <option>Frontend Engineer</option>
+    <option>Full Stack Engineer</option>
+    <option>Data Engineer</option>
+    <option>DevOps Engineer</option>
+    <option>Engineering Manager</option>
+    <option>Product Manager</option>
+    <option>Designer</option>
+    <option>Other</option>
+  </datalist>
+
+  <datalist id="employment-type-options">
+    <option>CLT</option>
+    <option>PJ</option>
+    <option>Estágio</option>
+    <option>Aprendiz</option>
+    <option>Freelancer</option>
+    <option>Autônomo</option>
+    <option>Temporário</option>
+    <option>Full-time</option>
+    <option>Part-time</option>
+    <option>Contract</option>
+    <option>Internship</option>
+  </datalist>
+
+  <template id="template-experience">
+    <div class="repeat-row" data-row="experience">
+      <div class="row-head">
+        <strong data-role="row-title">Experience</strong>
+        <button type="button" class="link-button" data-role="remove">Remove</button>
+      </div>
+      <div class="grid">
+        <label>Company <input data-field="company" placeholder="Globex Corporation"></label>
+        <label>Job title <input data-field="title" placeholder="Software Engineer"></label>
+        <label>Location <input data-field="location" placeholder="Remote, Brazil"></label>
+        <label>Employment type <input data-field="employmentType" list="employment-type-options" placeholder="CLT, PJ, Internship"></label>
+        <label>Start date <input data-field="startDate" type="month"></label>
+        <label>End date <input data-field="endDate" type="month"></label>
+        <label class="check"><input data-field="current" type="checkbox"> Current role</label>
+        <label class="check"><input data-field="remote" type="checkbox"> Remote</label>
+        <label class="span-2">Skills <small>Comma separated</small><input data-field="skills"></label>
+        <label class="span-2">Description <textarea data-field="description" rows="4"></textarea></label>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-education">
+    <div class="repeat-row" data-row="education">
+      <div class="row-head">
+        <strong data-role="row-title">Education</strong>
+        <button type="button" class="link-button" data-role="remove">Remove</button>
+      </div>
+      <div class="grid">
+        <label class="span-2">School / university <input data-field="school" placeholder="Universidade Exemplo de São Paulo"></label>
+        <label>Degree <input data-field="degree" placeholder="Associate's degree"></label>
+        <label>Field of study <input data-field="field" placeholder="Computer Science"></label>
+        <label>Start date <input data-field="startDate" type="month"></label>
+        <label>End date <input data-field="endDate" type="month"></label>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-language">
+    <div class="repeat-row compact" data-row="languages">
+      <div class="row-head">
+        <strong data-role="row-title">Language</strong>
+        <button type="button" class="link-button" data-role="remove">Remove</button>
+      </div>
+      <div class="grid">
+        <label>Language <input data-field="language" placeholder="English"></label>
+        <label>Level
+          <select data-field="level">
+            <option>Basic</option>
+            <option>Intermediate</option>
+            <option>Professional working proficiency</option>
+            <option>Full professional proficiency</option>
+            <option>Native or bilingual proficiency</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-answer">
+    <div class="repeat-row compact" data-row="answers">
+      <div class="row-head">
+        <strong data-role="row-title">Saved answer</strong>
+        <button type="button" class="link-button" data-role="remove">Remove</button>
+      </div>
+      <div class="grid">
+        <label>Field label / keyword <input data-field="key" placeholder="why do you want to work here"></label>
+        <label class="span-2">Answer <textarea data-field="value" rows="3"></textarea></label>
+      </div>
+    </div>
+  </template>
+
+  <script src="../shared/profile.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

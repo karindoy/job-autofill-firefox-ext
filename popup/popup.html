@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Job Form Autofill</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <div class="brand">
+      <img src="../icons/icon-48.png" alt="" width="28" height="28">
+      <div>
+        <strong>Job Autofill</strong>
+        <span id="siteLabel">Reading page…</span>
+      </div>
+    </div>
+    <button id="settingsBtn" class="icon-btn" type="button" title="Edit career profile" aria-label="Edit career profile">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94a7.7 7.7 0 0 0 .05-.94 7.7 7.7 0 0 0-.05-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.3 7.3 0 0 0-1.63-.95l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.63.95l-2.39-.96a.5.5 0 0 0-.6.22L2.65 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.03.31-.05.63-.05.94s.02.63.05.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.5.39 1.04.71 1.63.95l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.63-.95l2.39.96c.21.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Z"/></svg>
+    </button>
+  </header>
+
+  <main id="content" aria-busy="true">
+    <div id="loading" class="loading" role="status" aria-live="polite">
+      <span class="spinner" aria-hidden="true"></span>
+      Reading the page…
+    </div>
+
+    <div id="error" class="error-card" role="alert" hidden>
+      <div class="error-head">
+        <span class="error-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"/></svg>
+        </span>
+        <div class="error-copy">
+          <strong id="errorTitle">Can't read this page</strong>
+          <p id="errorText"></p>
+        </div>
+      </div>
+      <div class="error-actions">
+        <button id="retryBtn" class="ghost small" type="button">Try again</button>
+        <button id="reloadTabBtn" class="primary small" type="button">Reload tab</button>
+      </div>
+      <details id="errorDetails" class="error-details" hidden>
+        <summary>Technical details</summary>
+        <code id="errorDetail"></code>
+      </details>
+    </div>
+
+    <div id="profileBanner" class="banner" hidden>
+      <div class="banner-text">
+        <strong>Your profile is empty</strong>
+        <span>Fill it once, then reuse it on every application.</span>
+      </div>
+      <button id="setupBtn" class="primary small" type="button">Set up</button>
+    </div>
+
+    <section id="summary" hidden>
+      <div class="stats">
+        <span><strong id="statMatched">0</strong> matched</span>
+        <span><strong id="statFilled">0</strong> filled</span>
+        <span><strong id="statTotal">0</strong> fields</span>
+      </div>
+      <div class="actions">
+        <button id="fillEmpty" class="primary" type="button">Fill empty fields</button>
+        <button id="fillAll" class="ghost" type="button" title="Replace values that are already on the page">Overwrite all</button>
+        <button id="pickMode" class="ghost" type="button" title="Click a field on the page and choose a value">Pick on page</button>
+      </div>
+      <p id="fileNotice" class="file-note" hidden>Résumé/CV uploads have to be attached manually.</p>
+      <div class="status-row">
+        <p id="status" class="status" role="status"></p>
+        <button id="undoBtn" class="link" type="button" hidden>Undo fill</button>
+      </div>
+    </section>
+
+    <section id="fieldsSection" hidden>
+      <div class="list-head">
+        <span>Detected fields</span>
+        <button id="refreshBtn" class="link" type="button">Refresh</button>
+      </div>
+      <div id="fieldList" class="field-list"></div>
+    </section>
+
+    <div id="emptyState" class="empty" hidden>
+      <strong>No form fields found</strong>
+      <span>Open a job application form, then click Refresh. Some pages need a reload before the extension can see their fields. If the form is embedded in an iframe, auto-fill still runs there; open the iframe in its own tab to pick values field by field.</span>
+      <button id="refreshBtn2" class="ghost" type="button">Refresh</button>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <label class="toggle">
+      <input id="siteAutoFill" type="checkbox" class="switch" disabled>
+      <span>Auto-fill on this site</span>
+    </label>
+    <span id="profileName" class="profile-name" title="Current profile"></span>
+  </footer>
+
+  <script src="../shared/profile.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

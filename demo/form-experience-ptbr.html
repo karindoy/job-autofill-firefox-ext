@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Empregos Anteriores — Job Form Autofill demo (pt-BR)</title>
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <div class="demo-banner">
+    <div>
+      <strong>Demo · Empregos Anteriores (pt-BR)</strong>
+      <span>Three repeated work-history blocks. The extension fills block 1 with <code>experience[0]</code>, block 2 with <code>experience[1]</code>, and leaves block 3 empty.</span>
+      <span>Serve the folder over HTTP: <code>bash demo/serve.sh</code> → <code>http://localhost:8000/demo/form-experience-ptbr.html</code>.</span>
+    </div>
+  </div>
+
+  <div class="page">
+    <section class="card">
+      <h2 class="section-title">Empregos Anteriores</h2>
+
+      <div class="block">
+        <h3>Emprego 1</h3>
+        <div class="row two">
+          <div class="field">
+            <input id="empresa1" name="empresa" type="text">
+            <div class="caption">Nome da Empresa *</div>
+          </div>
+          <div class="field">
+            <input id="cargo1" name="cargo" type="text">
+            <div class="caption">Cargo *</div>
+          </div>
+        </div>
+        <div class="row three">
+          <div class="field">
+            <select id="relacao1" name="relacao">
+              <option value="">Selecione</option>
+              <option>CLT</option>
+              <option>PJ</option>
+              <option>Estágio</option>
+              <option>Aprendiz</option>
+              <option>Freelancer</option>
+            </select>
+            <div class="caption">Relação de Emprego *</div>
+          </div>
+          <div class="field">
+            <input id="inicio1" name="inicio" type="date">
+            <div class="caption">Data de início *</div>
+          </div>
+          <div class="field">
+            <input id="fim1" name="fim" type="date">
+            <div class="caption">Data de saída</div>
+          </div>
+        </div>
+        <div class="field">
+          <textarea id="atividades1" name="atividades" rows="4"></textarea>
+          <div class="caption">Principais Atividades Exercidas</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Emprego 2</h3>
+        <div class="row two">
+          <div class="field">
+            <input id="empresa2" name="empresa" type="text">
+            <div class="caption">Nome da Empresa *</div>
+          </div>
+          <div class="field">
+            <input id="cargo2" name="cargo" type="text">
+            <div class="caption">Cargo *</div>
+          </div>
+        </div>
+        <div class="row three">
+          <div class="field">
+            <select id="relacao2" name="relacao">
+              <option value="">Selecione</option>
+              <option>CLT</option>
+              <option>PJ</option>
+              <option>Estágio</option>
+              <option>Aprendiz</option>
+              <option>Freelancer</option>
+            </select>
+            <div class="caption">Relação de Emprego *</div>
+          </div>
+          <div class="field">
+            <input id="inicio2" name="inicio" type="date">
+            <div class="caption">Data de início *</div>
+          </div>
+          <div class="field">
+            <input id="fim2" name="fim" type="date">
+            <div class="caption">Data de saída</div>
+          </div>
+        </div>
+        <div class="field">
+          <textarea id="atividades2" name="atividades" rows="4"></textarea>
+          <div class="caption">Principais Atividades Exercidas</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Emprego 3</h3>
+        <div class="row two">
+          <div class="field">
+            <input id="empresa3" name="empresa" type="text">
+            <div class="caption">Nome da Empresa *</div>
+          </div>
+          <div class="field">
+            <input id="cargo3" name="cargo" type="text">
+            <div class="caption">Cargo *</div>
+          </div>
+        </div>
+        <div class="row three">
+          <div class="field">
+            <select id="relacao3" name="relacao">
+              <option value="">Selecione</option>
+              <option>CLT</option>
+              <option>PJ</option>
+              <option>Estágio</option>
+              <option>Aprendiz</option>
+              <option>Freelancer</option>
+            </select>
+            <div class="caption">Relação de Emprego *</div>
+          </div>
+          <div class="field">
+            <input id="inicio3" name="inicio" type="date">
+            <div class="caption">Data de início *</div>
+          </div>
+          <div class="field">
+            <input id="fim3" name="fim" type="date">
+            <div class="caption">Data de saída</div>
+          </div>
+        </div>
+        <div class="field">
+          <textarea id="atividades3" name="atividades" rows="4"></textarea>
+          <div class="caption">Principais Atividades Exercidas</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{
+  "manifest_version": 3,
+  "name": "Job Form Autofill",
+  "short_name": "Job Autofill",
+  "version": "1.1.2",
+  "description": "Fill job application forms from one career profile. Click-to-fill suggestions for anything the extension cannot guess.",
+  "author": "Job Form Autofill contributors",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "job-form-autofill@example.org",
+      "strict_min_version": "115.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "shared/profile.js",
+      "background.js"
+    ]
+  },
+  "action": {
+    "default_title": "Job Form Autofill",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    }
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "shared/profile.js",
+        "content/labels.js",
+        "content/rules.js",
+        "content/filler.js",
+        "content/picker.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "commands": {
+    "fill-page": {
+      "suggested_key": {
+        "default": "Alt+Shift+F"
+      },
+      "description": "Fill the current page"
+    },
+    "pick-field": {
+      "suggested_key": {
+        "default": "Alt+Shift+P"
+      },
+      "description": "Pick a field on the page and choose a value"
+    }
+  }
+}

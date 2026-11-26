@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "personal": {
+    "firstName": "Marina",
+    "middleName": "",
+    "lastName": "Alves",
+    "preferredName": "Marina",
+    "pronouns": "",
+    "email": "marina.alves@example.com",
+    "phoneCountry": "Brazil",
+    "phoneCountryCode": "BR",
+    "phoneDialCode": "+55",
+    "phoneNumber": "11999990000",
+    "country": "Brazil",
+    "countryCode": "BR",
+    "birthCountry": "Brazil",
+    "city": "São Paulo",
+    "state": "São Paulo",
+    "address": "",
+    "postalCode": "",
+    "dateOfBirth": "",
+    "nationality": "Brazilian",
+    "linkedin": "https://linkedin.com/in/marina-alves",
+    "github": "https://github.com/marinaalves",
+    "website": "",
+    "x": ""
+  },
+  "currentRole": {
+    "company": "Acme Software (Allocated at Banco Aurora)",
+    "title": "Software Engineer",
+    "roleCategory": "Software Engineer",
+    "location": "São Paulo",
+    "remote": true,
+    "startDate": "2023-03",
+    "endDate": "",
+    "current": true,
+    "skills": "Kotlin, React Native, TypeScript, SQL, Spring Boot, Spring Batch, Spring Framework, PostgreSQL, AWS, Docker, Kubernetes, Redis, JUnit, MockK, Micrometer, Prometheus, Agile, Scrum, Kanban",
+    "description": "Designed and implemented backend services from scratch, including API contracts, domain models, persistence, observability and automated integration tests.\n\nBuilt reusable processing pipelines with strategy-based handlers and clear error handling.\n\nImplemented asynchronous workflows using a managed queue, idempotent processing, retries and dead-letter handling.\n\nImproved database performance by analysing query plans and adding targeted indexes.\n\nDesigned versioned REST APIs with OpenAPI contracts, cursor-based pagination and standardised error responses.\n\nPlanned phased data migrations with dual writes, backfills and backward-compatible schema changes.",
+    "employmentType": "CLT"
+  },
+  "experience": [
+    {
+      "company": "Globex Corporation",
+      "title": "Software Engineer",
+      "location": "Remote, Brazil",
+      "startDate": "2019-06",
+      "endDate": "2023-02",
+      "current": false,
+      "remote": true,
+      "skills": "Kotlin, Java, Spring Boot, .NET, Angular, TypeScript, Docker, AWS, Azure, PostgreSQL, MySQL, Microservices, REST APIs, JUnit, Git, Linux",
+      "description": "Built backend APIs and internal tools with Kotlin, Java and Spring Boot, including automated tests and technical documentation.\n\nContributed to a distributed asset-tracking platform using Docker, PostgreSQL and cloud services.\n\nImplemented integrations with external partners using OAuth 2.0 and OpenID Connect.\n\nMaintained a shared payment service that consolidated multiple payment methods.",
+      "employmentType": "CLT"
+    },
+    {
+      "company": "Initech Sistemas",
+      "title": "Fullstack Developer Intern",
+      "location": "São Paulo, Brazil",
+      "startDate": "2017-06",
+      "endDate": "2018-12",
+      "current": false,
+      "remote": false,
+      "skills": "Node.js, CSS, HTML, JavaScript, MySQL, Java, REST APIs, Docker, Linux",
+      "description": "Created an internal form that streamlined a manual request process and reduced processing time.\n\nMaintained a web application for course enrolment and attendance tracking, reducing paper usage.",
+      "employmentType": "Estágio"
+    }
+  ],
+  "education": [
+    {
+      "school": "Universidade Exemplo de São Paulo",
+      "degree": "Associate's degree",
+      "field": "Computer Science",
+      "startDate": "2016-01",
+      "endDate": "2019-12"
+    },
+    {
+      "school": "Certificação de Idiomas Exemplo",
+      "degree": "English Certificate C1 Advanced",
+      "field": "English",
+      "startDate": "2024-03",
+      "endDate": "2024-03"
+    }
+  ],
+  "skills": {
+    "primary": "Java",
+    "secondary": "Kotlin, JavaScript, TypeScript, SQL, Spring framework, Spring Boot, Spring MVC, Spring Security, Spring Data JPA, Javalin, REST API, Microservice Architecture Style, OpenAPI Specification (OAS), Domain-Driven Design (DDD), Design patterns [Software Engineering], Object-oriented Programming, System design and analysis, Amazon Web Services, AWS Simple Queue Service, Amazon EC2, Amazon CloudWatch, Microsoft Azure, Docker, Kubernetes, Linux, Git, PostgreSQL, Microsoft SQL Server, MySQL, MongoDB, Redis, JUnit, MockK, Mockito, Unit Testing, Component / Integration Testing, Micrometer, Prometheus, Structured Logging, Metrics and Key Performance Indicators, Agile, Scrum, Kanban, Continuous Delivery, ReactJS, Angular",
+    "extra": "Node.js, .NET, OAuth 2.0, OpenID Connect, Shell Script, React Native"
+  },
+  "languages": [
+    {
+      "language": "English",
+      "level": "Professional working proficiency"
+    },
+    {
+      "language": "Portuguese",
+      "level": "Native or bilingual proficiency"
+    }
+  ],
+  "preferences": {
+    "expectedSalary": "10000",
+    "currency": "USD",
+    "englishLevel": "Professional working proficiency",
+    "preferredPlaceOfWork": "Remote",
+    "totalYears": "7",
+    "totalMonths": "0",
+    "relevantYears": "7",
+    "relevantMonths": "0",
+    "noticePeriod": "30 days",
+    "availableStart": "Immediately"
+  },
+  "eligibility": {
+    "authorizedToWork": "Yes",
+    "requiresSponsorship": "No",
+    "gender": "Decline to self-identify",
+    "ethnicity": "Decline to self-identify",
+    "veteran": "Decline to self-identify",
+    "disability": "Decline to self-identify"
+  },
+  "customAnswers": {
+    "how did you hear about us": "LinkedIn",
+    "why do you want to work here": "I want to work on products with real scale and ownership, where good API design, data consistency and production reliability matter."
+  },
+  "settings": {
+    "autoFill": true,
+    "autoFillOnNavigation": true,
+    "fillOnlyEmpty": true,
+    "dateFormat": "MM/DD/YYYY",
+    "blocklist": "",
+    "showPanelButton": false,
+    "highlightFilled": true
+  }
+}
